@@ -160,7 +160,7 @@ public abstract class BaseRequest<T extends BaseRequest> {
         HttpParams params = new HttpParams();
         HttpHeaders headers = new HttpHeaders();
 
-        Field[] fields = mRequestApi.getClass().getDeclaredFields();
+        List<Field> fields = EasyUtils.getAllFieldsList(mRequestApi.getClass());
         params.setMultipart(EasyUtils.isMultipart(fields));
         // 如果参数中包含流参数并且当前请求方式不是表单的话
         if (params.isMultipart() && type != BodyType.FORM) {

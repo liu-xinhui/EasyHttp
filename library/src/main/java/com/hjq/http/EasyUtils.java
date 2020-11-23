@@ -25,6 +25,8 @@ import java.net.URLEncoder;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +136,7 @@ public final class EasyUtils {
     /**
      * 判断是否包含存在流参数
      */
-    public static boolean isMultipart(Field[] fields) {
+    public static boolean isMultipart(List<Field> fields) {
         for (Field field : fields) {
             // 允许访问私有字段
             field.setAccessible(true);
@@ -372,5 +374,16 @@ public final class EasyUtils {
             EasyLog.print(e);
         }
         return null;
+    }
+
+    public static List<Field> getAllFieldsList(final Class<?> cls) {
+        final List<Field> allFields = new ArrayList<>();
+        Class<?> currentClass = cls;
+        while (currentClass != null) {
+            final Field[] declaredFields = currentClass.getDeclaredFields();
+            Collections.addAll(allFields, declaredFields);
+            currentClass = currentClass.getSuperclass();
+        }
+        return allFields;
     }
 }

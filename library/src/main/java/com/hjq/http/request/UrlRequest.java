@@ -2,6 +2,7 @@ package com.hjq.http.request;
 
 import androidx.lifecycle.LifecycleOwner;
 
+import com.hjq.http.EasyConfig;
 import com.hjq.http.EasyLog;
 import com.hjq.http.model.BodyType;
 import com.hjq.http.model.HttpHeaders;
@@ -12,10 +13,10 @@ import okhttp3.HttpUrl;
 import okhttp3.Request;
 
 /**
- *    author : Android 轮子哥
- *    github : https://github.com/getActivity/EasyHttp
- *    time   : 2020/10/07
- *    desc   : 不带 RequestBody 的请求
+ * author : Android 轮子哥
+ * github : https://github.com/getActivity/EasyHttp
+ * time   : 2020/10/07
+ * desc   : 不带 RequestBody 的请求
  */
 @SuppressWarnings("unchecked")
 public abstract class UrlRequest<T extends UrlRequest> extends BaseRequest<T> {
@@ -63,8 +64,26 @@ public abstract class UrlRequest<T extends UrlRequest> extends BaseRequest<T> {
         request.url(link);
         request.method(getRequestMethod(), null);
 
-        EasyLog.print("RequestUrl", String.valueOf(link));
-        EasyLog.print("RequestMethod", getRequestMethod());
+        // 打印请求头和参数的日志
+        if (EasyConfig.getInstance().isLogEnabled()) {
+            EasyLog.print("---------------------RequestUrl----------------------");
+            EasyLog.print(String.valueOf(link));
+            EasyLog.print("-------------------RequestMethod---------------------");
+            EasyLog.print(getRequestMethod());
+            if (!headers.isEmpty() || !params.isEmpty()) {
+                EasyLog.print("----------------------Headers------------------------");
+            }
+            for (String key : headers.getNames()) {
+                EasyLog.print(key, headers.get(key));
+            }
+            if (!headers.isEmpty() && !params.isEmpty()) {
+                EasyLog.print("----------------------Params-------------------------");
+            }
+            for (String key : params.getNames()) {
+                EasyLog.print(key, (String) params.get(key));
+            }
+            EasyLog.print("-----------------------------------------------------");
+        }
         return request.build();
     }
 }
