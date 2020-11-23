@@ -80,7 +80,7 @@ public abstract class UrlRequest<T extends UrlRequest> extends BaseRequest<T> {
                 EasyLog.print("----------------------Params-------------------------");
             }
             for (String key : params.getNames()) {
-                EasyLog.print(key, (String) params.get(key));
+                EasyLog.print(key, params.get(key) + "");
             }
             EasyLog.print("-----------------------------------------------------");
         }
